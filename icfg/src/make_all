@@ -1,0 +1,30 @@
+
+FILE_H="-I${IFILE_PATH}/ifile/include -I../include"
+FILE_L="-L${IFILE_PATH}/ifile/lib -lifile"
+FILE_C="icfg_tool.cpp icfg_inifile.cpp icfg_sinifile.cpp"
+FILE_O="icfg_tool.o icfg_inifile.o icfg_sinifile.o"
+IFLAGS="-DSS_64BIT_SERVER -D_REENTRANT -D_DEBUG_INFO_"
+
+######################  判断本机上是否有SDFS ###############################
+if [ -d $SDFS_HOME/include ] ; then
+FILE_H="$FILE_H -I${SDFS_HOME}/include -I${DSC_PATH}/include"
+FILE_L="$FILE_L -L${SDFS_HOME}/lib -lsdfs -L${DSC_PATH}/lib/ -ldsc"
+IFLAGS="$IFLAGS -D_SDFS_CFG_"
+echo "$FILE_L"
+echo "$FILE_H"
+fi
+
+CCS="g++ -fPIC -m64 -g -O2 -fpermissive"
+INCLUDE="-I../include ${FILE_H}"
+
+#######  编译  #########################
+echo "Compiling the  *.cpp $<"
+${CCS} -c ${IFLAGS} ${FILE_C} ${INCLUDE}
+
+#######  C动态库 ########################
+echo "Compiling the  C动态库 $<"
+rm -f libicfg.so
+rm -f ../lib/libicfg.so
+g++ -shared -o libicfg.so ${FILE_O}
+
+mv libicfg.so ../lib
