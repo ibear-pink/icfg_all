@@ -14,6 +14,14 @@ icfg_inifile::icfg_inifile()
 	m_FileType = 0;
 }
 
+#ifdef _SDFS_CFG_
+icfg_inifile::icfg_inifile(SDFS *sp)
+{
+	m_sp = sp;
+	m_FileType = SDFS_FILE_TYPE;
+}
+#endif
+
 icfg_inifile::~icfg_inifile()
 {
 	if (m_GroupList.size() == 0)
@@ -54,7 +62,7 @@ int icfg_inifile::icfg_ReadFile(const char *cfg_name)
 	if (m_FileType == SDFS_FILE_TYPE)
 	{
 #ifdef _SDFS_CFG_
-		fpFILE = new SDFS_GDF_FILE(cfg_name);
+		fpFILE = new SDFS_GDF_FILE(m_sp,cfg_name);
 #endif
 	}
 	else

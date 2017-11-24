@@ -36,6 +36,9 @@ class icfg_inifile
 {
 public:
 	icfg_inifile();
+#ifdef _SDFS_CFG_
+	icfg_inifile(SDFS *sp);
+#endif
 	virtual ~icfg_inifile();
 	virtual int icfg_ReadFile(const char *cfg_name);
 	virtual void icfg_Init(int file_type);
@@ -49,6 +52,9 @@ public:
 private:
 	int m_FileType;//文件系统类型 0:本地 1:sdfs（默认0）
 	map<string,map<string,icfg_Map*> > m_GroupList;//以组为单位存放
+#ifdef _SDFS_CFG_
+	SDFS *m_sp;
+#endif
 };
 
 #endif /* icfg_inifile_h */

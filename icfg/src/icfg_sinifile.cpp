@@ -14,6 +14,14 @@ icfg_sinifile::icfg_sinifile()
 	m_FileType = 0;
 }
 
+#ifdef _SDFS_CFG_
+icfg_sinifile::icfg_sinifile(SDFS *sp)
+{
+	m_sp = sp;
+	m_FileType = 0;
+}
+#endif
+
 icfg_sinifile::~icfg_sinifile()
 {
 	if (m_KeyValueList.size() == 0)
@@ -52,7 +60,7 @@ int icfg_sinifile::icfg_ReadFile(const char *cfg_name)
 	if (m_FileType == SDFS_FILE_TYPE)
 	{
 #ifdef _SDFS_CFG_
-		fpFILE = new SDFS_GDF_FILE(cfg_name);
+		fpFILE = new SDFS_GDF_FILE(m_sp,cfg_name);
 #endif
 	}
 	else

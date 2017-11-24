@@ -32,6 +32,10 @@ class icfg_sinifile
 {
 public:
 	icfg_sinifile();
+#ifdef _SDFS_CFG_
+	icfg_sinifile(SDFS *sp);
+#endif
+
 	~icfg_sinifile();
 	int icfg_ReadFile(const char *cfg_name);
 	void icfg_Init(int file_type);
@@ -43,6 +47,9 @@ public:
 private:
 	map<string,icfg_Map*> m_KeyValueList;//存放全部的Key,Value
 	int m_FileType;//文件系统类型 0:本地 1:sdfs（默认0）
+#ifdef _SDFS_CFG_
+	SDFS *m_sp;
+#endif
 };
 
 #endif /* icfg_sinifile_h */
